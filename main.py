@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI, Request
 
-import config
+import bot_config
 from dispatch import EventDispatcher
 from handlers.config import handle_config
 from handlers.debug import handle_debug
@@ -23,7 +23,7 @@ register_events()
 
 
 def on_debug():
-    if not config.config["debug"]:
+    if not bot_config.config["debug"]:
         dispatcher.clear_all()
         print("normal mode")
         register_events()

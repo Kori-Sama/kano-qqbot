@@ -1,10 +1,10 @@
 from post_type import GroupPost
-from constants import BOT_ID, BOT_NAME, GROUP_IDS, MASTER_ID
+from local_config import bot_id, bot_name, group_ids, master_id
 from send import get_send_group
 
 
 def handle_group(event: GroupPost):
-    if event.group_id not in GROUP_IDS:
+    if event.group_id not in group_ids:
         return
 
     send_group = get_send_group(event.group_id)
@@ -12,7 +12,7 @@ def handle_group(event: GroupPost):
     content = ""
     is_at_self = False
     for msg in event.message:
-        if msg.type == "at" and msg.data["qq"] == str(BOT_ID):
+        if msg.type == "at" and msg.data["qq"] == str(bot_id):
             is_at_self = True
         if msg.type == "text":
             content += msg.data["text"]
