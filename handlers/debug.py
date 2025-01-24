@@ -1,11 +1,12 @@
 from bot_config import config
+import bot_config
 from local_config import group_ids, master_id
 from post_type import GroupPost
 from send import get_send_group
 
 
 def handle_debug(event: GroupPost):
-    if event.group_id not in group_ids:
+    if event.group_id not in group_ids and bot_config.config["group_limit"]:
         return
 
     send_group = get_send_group(event.group_id)

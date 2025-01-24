@@ -53,7 +53,6 @@ class MessageSender:
 class GroupMessageSender(MessageSender):
     card: str
     role: Literal["owner", "admin", "member"]
-    title: str
 
     @staticmethod
     def parse(data):
@@ -62,7 +61,6 @@ class GroupMessageSender(MessageSender):
             nickname=data["nickname"],
             card=data["card"],
             role=data["role"],
-            title=data["title"]
         )
 
 
