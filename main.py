@@ -1,3 +1,4 @@
+from loguru import logger
 import uvicorn
 from fastapi import FastAPI, Request
 
@@ -25,11 +26,11 @@ register_events()
 def on_debug():
     if not bot_config.config["debug"]:
         dispatcher.clear_all()
-        print("normal mode")
+        logger.info("normal mode")
         register_events()
         return
 
-    print("debug mode")
+    logger.info("debug mode")
     dispatcher.clear_all()
     dispatcher.register("message", handle_debug)
 
@@ -37,7 +38,8 @@ def on_debug():
 @app.post("/event")
 async def root(request: Request):
     data = await request.json()
-    print(data)
+
+    logger.info(data)
 
     event = parse_post(data)
 

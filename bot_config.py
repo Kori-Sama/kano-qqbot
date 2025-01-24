@@ -1,7 +1,6 @@
 config = {
     "llm": False,
-    "echo": False,
     "debug": False,
-    "group_limit": True,
+    "group_limit": False,
     "ctx": True,
 }

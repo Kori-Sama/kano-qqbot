@@ -1,3 +1,4 @@
+from loguru import logger
 import bot_config
 from llm import llm, llm_with_ctx
 from post_type import GroupPost
@@ -28,11 +29,11 @@ def handle_group(event: GroupPost):
         ctx = group_history(event.group_id)
 
         r = llm_with_ctx(ctx)
-        print("with ctx:", r)
+        logger.info("with ctx:", r)
         send_group(r)
     else:
         r = llm(event.sender.nickname, content)
-        print("single reply:", r)
+        logger.info("single reply:", r)
         send_group(r)
 
     # if "我喜欢你" in event.raw_message:

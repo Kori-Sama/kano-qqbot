@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from loguru import logger
 
 load_dotenv(verbose=True)
 
@@ -11,4 +12,11 @@ master_id = int(os.getenv("MASTER_ID"))
 bot_id = int(os.getenv("BOT_ID"))
 bot_name = os.getenv("BOT_NAME")
 
-print(group_ids)
+logger.info(f"""
+            config loaded:
+            base_send_url: {base_send_url}
+            group_ids: {group_ids}
+            master_id: {master_id}
+            bot_id: {bot_id}
+            bot_name: {bot_name}
+            """)

@@ -14,7 +14,6 @@ def handle_debug(event: GroupPost):
     if event.sender.user_id != master_id:
         return
 
-    print(event.message)
     for msg in event.message:
         if msg.type == "text":
             cmd = msg.data["text"].strip().split(" ")

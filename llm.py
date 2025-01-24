@@ -59,8 +59,7 @@ def llm(user: str, message: str) -> str:
 
 
 if __name__ == "__main__":
-    # try:
+
     r = llm("KoriSama", "你是谁")
-    # except Exception as e:
-    #     r = str(e)
+
     print(r)

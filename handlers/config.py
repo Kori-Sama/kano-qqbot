@@ -1,4 +1,5 @@
 
+from loguru import logger
 from bot_config import config
 from local_config import group_ids, master_id
 from post_type import GroupPost
@@ -6,6 +7,9 @@ from send import get_send_group
 
 
 def handle_config(event: GroupPost):
+    if event is None:
+        return
+
     if event.post_type != "message" or event.message_type != "group":
         return
 
@@ -23,7 +27,7 @@ def handle_config(event: GroupPost):
 
     cmd, key = event.raw_message.split(" ")
 
-    print(f"cmd: {cmd}, key: {key}")
+    logger.info(f"cmd: {cmd}, key: {key}")
 
     if key in config:
         if cmd == "set":
