@@ -1,10 +1,7 @@
-from loguru import logger
 import bot_config
-from llm import llm
 from post_type import GroupPost
-from local_config import bot_id, bot_name, group_ids, master_id
-from sched_main import PROMPT
-from send import get_send_group, group_history
+from local_config import bot_id, group_ids
+from send import get_send_group
 
 
 def handle_group(event: GroupPost):
@@ -25,27 +22,3 @@ def handle_group(event: GroupPost):
         return
 
     content = content.strip()
-
-    if bot_config.config["ctx"]:
-        ctx = group_history(event.group_id)
-
-        r = llm(event.sender.nickname, content, ctx=ctx)
-        logger.info("with ctx:", r)
-        send_group(r)
-    else:
-        r = llm(event.sender.nickname, content)
-        logger.info("single reply:", r)
-        send_group(r)
-
-    # if "我喜欢你" in event.raw_message:
-    #     if event.sender.user_id == MASTER_ID:
-    #         send_group("我也喜欢你喵主人~")
-    #     else:
-    #         send_group("我不喜欢你!")
-    #     return
-
-    # if event.sender.user_id == MASTER_ID:
-    #     send_group("喵~")
-    # else:
-    #     send_group("哈!!!")
-    # return

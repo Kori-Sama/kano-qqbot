@@ -10,6 +10,10 @@ def handle_notice(event: NoticePost):
 
     send_group = get_send_group(event.group_id)
 
-    if event.sub_type == "poke" and event.target_id == bot_id:
-        send_group("别戳我喵!")
-        return
+    # if event.sub_type == "poke" and event.target_id == bot_id:
+    #     send_group("别戳我喵!")
+    #     return
+
+    if event.sub_type == "approve" or event.sub_type == "invite":
+        msg = f"欢迎新成员 [CQ:at,qq={event.user_id}] 加入本群！"
+        send_group(msg)
