@@ -15,5 +15,5 @@ def handle_notice(event: NoticePost):
     #     return
 
     if event.sub_type == "approve" or event.sub_type == "invite":
-        msg = f"欢迎新成员 [CQ:at,qq={event.user_id}] 加入本群！"
+        msg = f"欢迎新烤批 [CQ:at,qq={event.user_id}] 加入本群！"
         send_group(msg)
