@@ -26,8 +26,8 @@ register_events()
 def on_debug():
     if not bot_config.config["debug"]:
         dispatcher.clear_all()
-        logger.info("normal mode")
         register_events()
+        logger.info("reset events")
         return
 
     logger.info("debug mode")

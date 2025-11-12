@@ -1,8 +1,9 @@
 from loguru import logger
 import bot_config
-from llm import llm, llm_with_ctx
+from llm import llm
 from post_type import GroupPost
 from local_config import bot_id, bot_name, group_ids, master_id
+from sched_main import PROMPT
 from send import get_send_group, group_history
 
 
@@ -28,7 +29,7 @@ def handle_group(event: GroupPost):
     if bot_config.config["ctx"]:
         ctx = group_history(event.group_id)
 
-        r = llm_with_ctx(ctx)
+        r = llm(event.sender.nickname, content, ctx=ctx)
         logger.info("with ctx:", r)
         send_group(r)
     else:
