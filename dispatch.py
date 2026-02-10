@@ -11,6 +11,8 @@ class EventDispatcher:
         self.handlers[event_type].append(handler)
 
     def dispatch(self, event: Post):
+        if event.post_type is None:
+            return
         event_type = event.post_type
         if event_type in self.handlers:
             for handler in self.handlers[event_type]:

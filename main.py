@@ -26,8 +26,8 @@ register_events()
 def on_debug():
     if not bot_config.config["debug"]:
         dispatcher.clear_all()
-        logger.info("normal mode")
         register_events()
+        logger.info("reset events")
         return
 
     logger.info("debug mode")
@@ -35,7 +35,7 @@ def on_debug():
     dispatcher.register("message", handle_debug)
 
 
-@app.post("/event")
+@app.post("/")
 async def root(request: Request):
     data = await request.json()
 
@@ -53,4 +53,4 @@ async def root(request: Request):
     return {}
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=5120, reload=True)
+    uvicorn.run("main:app",host='0.0.0.0', port=3001, reload=False)

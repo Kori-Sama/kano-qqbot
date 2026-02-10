@@ -25,7 +25,7 @@ def handle_debug(event: GroupPost):
 
     if cmd[0] == "eval":
         try:
-            result = eval(cmd[1])
+            result = exec(" ".join(cmd[1:]))
             send_group(str(result))
         except Exception as e:
             send_group(str(e))

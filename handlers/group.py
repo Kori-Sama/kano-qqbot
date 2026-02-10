@@ -1,9 +1,8 @@
-from loguru import logger
 import bot_config
-from llm import llm, llm_with_ctx
 from post_type import GroupPost
-from local_config import bot_id, bot_name, group_ids, master_id
-from send import get_send_group, group_history
+from local_config import group_ids
+from send import get_send_group
+from welcome import set_template
 
 
 def handle_group(event: GroupPost):
@@ -12,39 +11,35 @@ def handle_group(event: GroupPost):
 
     send_group = get_send_group(event.group_id)
 
-    content = ""
-    is_at_self = False
-    for msg in event.message:
-        if msg.type == "at" and msg.data["qq"] == str(bot_id):
-            is_at_self = True
-        if msg.type == "text":
-            content += msg.data["text"]
+    # Concatenate all text segments to form the message content
+    text_parts = [msg.data["text"] for msg in event.message if msg.type == "text"]
+    content = "".join(text_parts).strip() if text_parts else ""
 
-    if not is_at_self:
+    # Handle setting welcome template (admin or owner only)
+    if content.startswith("setwelcome") and event.sender.role in {"admin", "owner"}:
+        parts = content.split(maxsplit=1)
+        if len(parts) == 1 or not parts[1].strip():
+            send_group(
+                "用法: setwelcome 欢迎模板\n示例: setwelcome 欢迎 <user> 加入本群！"
+            )
+            return
+        welcome_msg = parts[1].strip()
+        try:
+            set_template(event.group_id, welcome_msg)
+            send_group("已更新本群欢迎词 ✅")
+        except Exception:
+            send_group("更新欢迎词失败，请稍后重试。")
         return
 
-    content = content.strip()
+    # content = ""
+    # is_at_self = False
+    # for msg in event.message:
+    #     if msg.type == "at" and msg.data["qq"] == str(bot_id):
+    #         is_at_self = True
+    #     if msg.type == "text":
+    #         content += msg.data["text"]
 
-    if bot_config.config["ctx"]:
-        ctx = group_history(event.group_id)
-
-        r = llm_with_ctx(ctx)
-        logger.info("with ctx:", r)
-        send_group(r)
-    else:
-        r = llm(event.sender.nickname, content)
-        logger.info("single reply:", r)
-        send_group(r)
-
-    # if "我喜欢你" in event.raw_message:
-    #     if event.sender.user_id == MASTER_ID:
-    #         send_group("我也喜欢你喵主人~")
-    #     else:
-    #         send_group("我不喜欢你!")
+    # if not is_at_self:
     #     return
 
-    # if event.sender.user_id == MASTER_ID:
-    #     send_group("喵~")
-    # else:
-    #     send_group("哈!!!")
-    # return
+    # content = content.strip()
